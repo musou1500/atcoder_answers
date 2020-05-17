@@ -3,29 +3,30 @@
 using namespace std;
 
 int main(int argc, const char *argv[]) {
-  int n, m;
+  using ll = long long;
+  ll n, m;
   cin >> n >> m;
-
-  vector<int> vx(m);
-  for (int i = 0; i < m; ++i) {
+  vector<ll> vx(m);
+  for (ll i = 0; i < m; ++i) {
     cin >> vx[i];
   }
 
   sort(vx.begin(), vx.end());
   n--;
 
-  vector<int> dists(m - 1);
-  for (int i = 0; i < m - 1; ++i) {
-    dists[i] = abs(vx[i + 1] - vx[i]);
+  vector<ll> dists;
+  for (ll i = 1; i < m; ++i) {
+    dists.push_back(vx[i] - vx[i - 1]);
   }
 
-  sort(dists.begin(), dists.end(), greater<int>());
+  sort(dists.begin(), dists.end(), greater<ll>());
 
-  int sum = accumulate(dists.begin(), dists.end(), 0);
-  for (int i = 0; i < min(n, static_cast<int>(dists.size())); ++i) {
-    sum -= dists[i];
+  ll ans = 0;
+  for (int i = n; i < dists.size(); ++i) {
+    ans += dists[i];
   }
 
-  cout << sum << '\n';
+  cout << ans << '\n';
+
   return 0;
 }
