@@ -71,10 +71,8 @@ int main(int argc, const char *argv[]) {
   }
 
   // 順番を全探索
-  vector<int> order;
-  for (int i = 0; i < r; ++i) {
-    order.push_back(i);
-  }
+  vector<int> order(r);
+  iota(order.begin(), order.end(), 0);
 
   int ans = -1;
   do {
