@@ -34,7 +34,6 @@ int main(int argc, const char *argv[]) {
     }
   }
 
-  // パスをたどる
   int cur = n - 1;
   vector<int> vpath;
   while (cur != 0) {
@@ -44,7 +43,8 @@ int main(int argc, const char *argv[]) {
     }
   }
 
-  int turn_f = vpath.size() / 2 + vpath.size() % 2, turn_s = vpath.size() / 2;
+  int turns = vpath.size() / 2;
+  int turn_f = turns + vpath.size() % 2, turn_s = turns;
   for (int i = 0; i < vpath.size(); ++i) {
     colors[vpath[i]] = i >= turn_s;
   }
@@ -57,16 +57,12 @@ int main(int argc, const char *argv[]) {
     while (!st.empty()) {
       auto idx = st.top();
       st.pop();
-      if (colors[idx] != -1 && colors[idx] != c) {
+      if (seen[idx] || (colors[idx] != -1 && colors[idx] != c)) {
         continue;
       }
 
-      if (seen[idx]) {
-        continue;
-      }
-
-      seen[idx] = true;
       ans += colors[idx] == -1;
+      seen[idx] = true;
       colors[idx] = c;
       for (auto ch : g[idx]) {
         st.push(ch);
@@ -79,10 +75,6 @@ int main(int argc, const char *argv[]) {
   turn_f += dfs(1, 0);
   turn_s += dfs(0, n - 1);
 
-  if (turn_f == turn_s) {
-    turn_s++;
-  }
-
-  cout << (turn_s < turn_f ? "Fennec" : "Snuke") << '\n';
+  cout << (turn_f == turn_s || turn_s > turn_f ? "Snuke" : "Fennec") << '\n';
   return 0;
 }
