@@ -3,31 +3,6 @@
 using namespace std;
 using ll = long long;
 
-ll solve(vector<vector<ll>> &v, int i, int j, vector<vector<ll>> &memo) {
-  if (i == v.size()) {
-    return 1;
-  }
-
-  if (j >= v[i].size()) {
-    return 0;
-  }
-
-  if (memo[i][j] == -1) {
-    ll ans = solve(v, i, j + 1, memo);
-
-    if (i + 1 < v.size()) {
-      auto it = upper_bound(v[i + 1].begin(), v[i + 1].end(), v[i][j]);
-      ans += solve(v, i + 1, distance(v[i + 1].begin(), it), memo);
-    } else {
-      ans++;
-    }
-
-    memo[i][j] = ans;
-  }
-
-  return memo[i][j];
-}
-
 int main(int argc, const char *argv[]) {
   int n;
   cin >> n;
@@ -41,9 +16,15 @@ int main(int argc, const char *argv[]) {
   sort(vb.begin(), vb.end());
   sort(vc.begin(), vc.end());
 
-  vector<vector<ll>> memo(5, vector<ll>(n + 10, -1));
-  vector<vector<ll>> v{va, vb, vc};
-  cout << solve(v, 0, 0, memo) << '\n';
+  ll ans = 0;
+  for (int i = 0; i < n; ++i) {
+    auto it_a = upper_bound(va.rbegin(), va.rend(), vb[i], greater<ll>());
+    auto it_c = upper_bound(vc.begin(), vc.end(), vb[i]);
+
+    ans += distance(it_a, va.rend()) * distance(it_c, vc.end());
+  }
+
+  cout << ans << '\n';
 
   return 0;
 }
