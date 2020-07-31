@@ -111,31 +111,16 @@ int main(int argc, const char *argv[]) {
     cin >> vy[i];
   }
 
-  vector<MInt> vdx(n - 1), vdy(m - 1);
-  for (int i = 1; i < n; ++i) {
-    vdx[i - 1] = vx[i] - vx[i - 1];
+  MInt s1(0), s2(0);
+  for (int i = 0; i < n - 1; ++i) {
+    s1 += MInt(i + 1) * MInt(n - i - 1) * MInt(vx[i + 1] - vx[i]);
   }
 
-  for (int i = 1; i < m; ++i) {
-    vdy[i - 1] = vy[i] - vy[i - 1];
+  for (int i = 0; i < m - 1; ++i) {
+    s2 += MInt(i + 1) * MInt(m - i - 1) * MInt(vy[i + 1] - vy[i]);
   }
 
-  MInt sx = accumulate(vdx.begin(), vdx.end(), MInt(0)),
-       sy = accumulate(vdy.begin(), vdy.end(), MInt(0));
-
-  MInt mn = n, mm = m;
-
-  MInt ans1(0);
-  for (int i = 0; i < vdx.size(); ++i) {
-    ans1 += MInt(i + 1) * MInt(vdx.size() - i) * vdx[i];
-  }
-
-  MInt ans2(0);
-  for (int i = 0; i < vdy.size(); ++i) {
-    ans2 += MInt(i + 1) * MInt(vdy.size() - i) * vdy[i];
-  }
-
-  cout << (ans1 * ans2).Get() << '\n';
+  cout << (s1 * s2).Get() << '\n';
 
   return 0;
 }
