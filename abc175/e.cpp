@@ -16,9 +16,7 @@ ll solve(vector<vector<ll>> &pts, vector<vector<vector<ll>>> &memo, int r = 0,
           max({solve(pts, memo, r + 1, c, 0), solve(pts, memo, r, c + 1, cnt)});
     } else {
       memo[r][c][cnt] =
-          max({// 下に移動する
-               v + solve(pts, memo, r + 1, c, 0), solve(pts, memo, r + 1, c, 0),
-               // 右に移動する
+          max({v + solve(pts, memo, r + 1, c, 0), solve(pts, memo, r + 1, c, 0),
                v + solve(pts, memo, r, c + 1, cnt + (v > 0)),
                solve(pts, memo, r, c + 1, cnt)});
     }
